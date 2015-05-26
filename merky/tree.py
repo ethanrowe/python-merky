@@ -4,6 +4,8 @@ import hashlib
 import itertools
 import json
 
+import six
+
 def hexdigest(encodable):
     return hashlib.sha1(encodable.encode("utf-8")).hexdigest()
 
@@ -38,7 +40,7 @@ def ordered_map(sequence):
 
 def map_handler(item):
     try:
-        i = flatten(sorted(item.iteritems()))
+        i = flatten(sorted(six.iteritems(item)))
         return i, ordered_map, True
     except AttributeError:
         raise TypeError
