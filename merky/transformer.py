@@ -39,17 +39,3 @@ class AnnotationTransformer(Transformer):
     def get_dispatcher(self):
         return tree.annotation_dispatcher
 
-    def get_serializer(self):
-        self._s = super(AnnotationTransformer, self).get_serializer()
-        def s(item):
-            v = self._s(item)
-            return v
-        return s
-
-    def get_tokenizer(self):
-        self._t = super(AnnotationTransformer, self).get_tokenizer()
-        def t(item):
-            v = self._t(item)
-            return v
-        return t
-
