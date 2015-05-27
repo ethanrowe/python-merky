@@ -2,7 +2,7 @@ import collections
 
 from nose import tools
 from . import words
-from merky import tree
+import merky
 
 BASIC_SEQ = (words.SHEKELS, words.EUROS, words.EPEES)
 BASIC_SEQ_JSON = words.unify('[',
@@ -46,7 +46,7 @@ UNANNOTATED_NESTED_DICT_HASH = '7e5c9d9334702c025e185a9f63e380d16b85b083'
 
 def test_simple_unannotated_list():
     # It always does the top level guy regardless of annotation.
-    t = tree.AnnotationTransformer()
+    t = merky.AnnotationTransformer()
     r = t.transform(BASIC_SEQ)
     tools.assert_equal((BASIC_SEQ_HASH, list(BASIC_SEQ)), next(r))
     tools.assert_raises(StopIteration, next, r)
@@ -55,15 +55,15 @@ def test_simple_unannotated_list():
 def test_nested_unannotated_list():
     # And again, it always does the top level guy.  But since no members are annotated, it
     # won't explode out anything else.
-    t = tree.AnnotationTransformer()
+    t = merky.AnnotationTransformer()
     r = t.transform(UNANNOTATED_NESTED_SEQ)
     tools.assert_equal((UNANNOTATED_NESTED_SEQ_HASH, [words.ANGSTROM, list(BASIC_SEQ), 213, -315]), next(r))
     tools.assert_raises(StopIteration, next, r)
 
 def test_nested_annotated_list():
     # Top level always gets done, but this time, the nested guy wil be too.
-    t = tree.AnnotationTransformer()
-    r = t.transform((words.ANGSTROM, tree.annotate(BASIC_SEQ), 213, -315))
+    t = merky.AnnotationTransformer()
+    r = t.transform((words.ANGSTROM, merky.annotate(BASIC_SEQ), 213, -315))
     # We get the inner guy first, who is tokenized due to annotation
     tools.assert_equal((BASIC_SEQ_HASH, list(BASIC_SEQ)), next(r))
     # The outer guy is different this time, as the token replaced the nested list.
@@ -73,14 +73,14 @@ def test_nested_annotated_list():
     tools.assert_raises(StopIteration, next, r)
 
 def test_simple_unannotated_dict():
-    t = tree.AnnotationTransformer()
+    t = merky.AnnotationTransformer()
     r = t.transform(BASIC_DICT)
     tools.assert_equal((BASIC_DICT_HASH, BASIC_DICT_ORDERED), next(r))
     tools.assert_raises(StopIteration, next, r)
 
 
 def test_nested_unannotated_dict():
-    t = tree.AnnotationTransformer()
+    t = merky.AnnotationTransformer()
     r = t.transform(UNANNOTATED_NESTED_DICT)
     tools.assert_equal((UNANNOTATED_NESTED_DICT_HASH, UNANNOTATED_NESTED_DICT_ORDERED),
                        next(r))
@@ -88,13 +88,13 @@ def test_nested_unannotated_dict():
 
 
 def test_mixed_nesting():
-    t = tree.AnnotationTransformer()
-    x = {"a": tree.annotate([
-                    {"a": tree.annotate({"a": "A", "b": "B"}), "b": "B"},
+    t = merky.AnnotationTransformer()
+    x = {"a": merky.annotate([
+                    {"a": merky.annotate({"a": "A", "b": "B"}), "b": "B"},
                     {"nothing": "special"},
                 ]),
          "b": [
-                tree.annotate({"c": "C", "d": "D"}),
+                merky.annotate({"c": "C", "d": "D"}),
                 {"e": "E", "f": "F"},
               ],
         }

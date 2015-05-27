@@ -2,7 +2,7 @@ import collections
 
 from nose import tools
 from . import words
-from merky import tree
+import merky
 
 # Need to sort out how to do this with six compatibility layer
 BASIC_JSON = words.unify('{"false":false,"negative integer":-17,"positive integer":25000,"string":"some string","true":true,"unicode":"',
@@ -78,25 +78,25 @@ NESTING_LIST_JSON = words.unify('[',
 NESTING_LIST_HASH = 'd724e888872c0a0545b13c0f16980953df360bf9'
 
 def test_string():
-    t = tree.Transformer()
+    t = merky.Transformer()
     r = t.transform("what?")
     tools.assert_equal(("74417e40273f06624262871962bd9e738162da47", "what?"), next(r))
     tools.assert_raises(StopIteration, next, r)
 
 def test_integer():
-    t = tree.Transformer()
+    t = merky.Transformer()
     r = t.transform(54321)
     tools.assert_equal(("348162101fc6f7e624681b7400b085eeac6df7bd", 54321), next(r))
     tools.assert_raises(StopIteration, next, r)
 
 def test_basic_dict():
-    t = tree.Transformer()
+    t = merky.Transformer()
     r = t.transform(BASIC)
     tools.assert_equal((BASIC_HASH, BASIC_ORDERED), next(r))
     tools.assert_raises(StopIteration, next, r)
 
 def test_nesting_dict():
-    t = tree.Transformer()
+    t = merky.Transformer()
     r = t.transform(NESTING_DICT)
     # We know the order because its depth-first traversal.
     # We also expect the hash to be the same for each copy of BASIC.
@@ -110,13 +110,13 @@ def test_nesting_dict():
     tools.assert_raises(StopIteration, next, r)
 
 def test_basic_list():
-    t = tree.Transformer()
+    t = merky.Transformer()
     r = t.transform(LIST)
     tools.assert_equal((LIST_HASH, LIST), next(r))
     tools.assert_raises(StopIteration, next, r)
 
 def test_nesting_list():
-    t = tree.Transformer()
+    t = merky.Transformer()
     r = t.transform(NESTING_LIST)
 
     tools.assert_equal((BASIC_HASH, BASIC_ORDERED), next(r))
