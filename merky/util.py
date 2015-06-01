@@ -1,5 +1,6 @@
 import collections
 import itertools
+import six
 
 def flatten(sequence_of_sequences):
     return itertools.chain.from_iterable(sequence_of_sequences)
@@ -30,4 +31,8 @@ class annotate(object):
 
     def __iter__(self):
         return iter(self._o)
+
+
+def annotate_values(dictlike):
+    return dict((k, annotate(v)) for k, v in six.iteritems(dictlike))
 
