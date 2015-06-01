@@ -85,13 +85,66 @@ class L(Node):
     def apply_ordering(self, v):
         return list(v)
 
+def p_ordered_dict(o, indent, outdent):
+    return 'OrderedDict([\n' + \
+                indent + \
+                (',\n%s' % indent).join(pretty(kvp, indent) for kvp in six.iteritems(o)) + \
+            '\n%s])' % outdent
+
+def p_dict(o, indent, outdent):
+    return '{\n' + \
+                indent + \
+                ('\n%s' % indent).join("%s: %s," % (pretty(k, indent), pretty(v, indent))
+                                       for k, v in six.iteritems(o)) + \
+            '\n%s}' % outdent
+
+def p_list(o, indent, outdent):
+    return '[\n' + \
+                indent + \
+                (',\n%s' % indent).join(pretty(v, indent) for v in o) + \
+            '\n%s]' % outdent
+
+def p_tuple(o, indent, outdent):
+    if len(o) == 1:
+        return '(%s,)' % pretty(o[0], indent)
+    return '(\n' + \
+                indent + \
+                (',\n%s' % indent).join(pretty(v, indent) for v in o) + \
+            '\n%s)' % outdent
+
+def p_tokenset(o, indent, outdent):
+    return 'Tokenset(\n%s%s,\n%stoken=%s\n%s)' % (
+            indent,
+            pretty(o.tokens, indent),
+            indent,
+            pretty(o.token, indent),
+            outdent)
+
+
+PRINTERS = (
+        (Tokenset, p_tokenset),
+        (OrderedDict, p_ordered_dict),
+        (dict, p_dict),
+        (list, p_list),
+        (tuple, p_tuple),
+    )
+
+
+def pretty(struct, indent=''):
+    outdent = indent
+    indent = outdent + '    '
+    for type_, handler in PRINTERS:
+        if isinstance(struct, type_):
+            return handler(struct, indent, outdent)
+    return repr(struct)
+
 
 def name(var, suffix):
     return '%s_%s' % (var.upper(), suffix.upper())
 
 
 def constant(var, graph):
-    return '%s = %s' % (var, repr(graph))
+    return '%s = %s' % (var, pretty(graph))
 
 
 
@@ -145,7 +198,6 @@ def variables():
 def generate(stream):
     six.print_(COMMON_CODE, file=stream)
     for name, structure in variables():
-        six.print_(name, file=sys.stderr)
         for definition in variable_set(name, structure):
             six.print_(definition, file=stream)
 
