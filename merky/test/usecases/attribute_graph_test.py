@@ -143,4 +143,58 @@ def test_with_grandkids():
         ],
         transform(g))
 
+def walker_graph():
+    return dag(
+        attrs={"name": "grandparent"},
+        members={
+            "a": dag(
+                attrs={"name": "parent-a"},
+                members={
+                    "a": dag(attrs={"name": "child-a-a"}),
+                    "b": dag(attrs={"name": "child-a-b"}),
+                }
+            ),
+            "b": dag(
+                attrs={"name": "parent-b"},
+                members={
+                    "a": dag(attrs={"name": "child-b-a"}),
+                    "b": dag(attrs={"name": "child-b-b"}),
+                }
+            ),
+        }
+    )
+
+
+def verify_names(expect, i):
+    for keynameiter in expect:
+        received = next(i)
+        tools.assert_equal(list(keynameiter), [(k, m.attrs["name"]) for k, m in received])
+    tools.assert_raises(StopIteration, next, i)
+
+def test_node_walk():
+    top = walker_graph()
+    verify_names(
+        [
+            [(None, "grandparent")],
+            [("a", "parent-a"), (None, "grandparent")],
+            [("a", "child-a-a"), ("a", "parent-a"), (None, "grandparent")],
+            [("b", "child-a-b"), ("a", "parent-a"), (None, "grandparent")],
+            [("b", "parent-b"), (None, "grandparent")],
+            [("a", "child-b-a"), ("b", "parent-b"), (None, "grandparent")],
+            [("b", "child-b-b"), ("b", "parent-b"), (None, "grandparent")],
+        ],
+        top.nodes()
+    )
+
+def test_leaf_walk():
+    top = walker_graph()
+    verify_names(
+        [
+            [("a", "child-a-a"), ("a", "parent-a"), (None, "grandparent")],
+            [("b", "child-a-b"), ("a", "parent-a"), (None, "grandparent")],
+            [("a", "child-b-a"), ("b", "parent-b"), (None, "grandparent")],
+            [("b", "child-b-b"), ("b", "parent-b"), (None, "grandparent")],
+        ],
+        top.leaves()
+    )
 

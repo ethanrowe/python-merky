@@ -1,3 +1,4 @@
+import itertools
 import six
 from merky import util
 
@@ -142,5 +143,72 @@ class AttributeGraph(object):
         tokens = reader(token)
         return cls(attrs=cls.attrs_from_token_list(tokens, reader),
                    members=cls.members_from_token_list(tokens, reader))
+
+
+    def walk(self, prior, key, predicate=lambda o, p, k: True):
+        chain = list(itertools.chain(((key, self),), prior))
+        if predicate(self, prior, key):
+            yield iter(chain)
+
+        if self.members:
+            for k, v in sorted(six.iteritems(self.members)):
+                for result in v.walk(chain, k, predicate=predicate):
+                    yield result
+
+    def nodes(self):
+        """
+        Iterate over all nodes (and their ancestry) in the graph.
+
+        Walks the AttributeGraph and per node, yields an iterator of
+        `(key, node)` pairs.  That sequence of pairs is in depth-first
+        order, starting with the specific node and its corresponding key
+        within its parent, followed by the parent node and that node's key
+        within its own parent, and so on all the way to the root of the tree.
+
+        If you're only interested in each node in isolation, then you need
+        only use the first item in each such group.  However, this model lets
+        you see each node's "ancestry" or path through the hierarchy, which
+        is helpful for various uses.
+
+        The root node's key is always `None` within this scheme.
+
+        Given some AttributeGraph A with child members B and C (and corresponding
+        keys "b" and "c", respectively), then:
+
+            [list(s) for s in A.nodes()]
+
+        would produce:
+
+            [
+                [(None, A)],
+                [("b", B), (None, A)],
+                [("c", C), (None, A)],
+            ]
+    
+        """
+
+        return self.walk((), None)
+
+    def leaves(self):
+        """
+        Iterate over all leaf nodes (and their ancestry) in the graph
+
+        Like `nodes`, but only the sequences for leaf nodes are yielded; each
+        sequence has the full ancestry, but the intermediary nodes do not
+        yield a sequence.
+
+        Given the A, B, C scenario described for `nodes()`,
+
+            [list(s) for s in A.leaves()]
+
+        would produce:
+
+            [
+                [("b", B), (None, A)],
+                [("c", C), (None, A)],
+            ]
+
+        """
+        return self.walk((), None, predicate=lambda o, p, k: (o.members is None or len(o.members) < 1))
 
 
