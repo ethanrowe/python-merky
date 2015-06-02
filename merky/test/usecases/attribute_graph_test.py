@@ -8,6 +8,9 @@ from merky import util
 def dag(attrs=None, members=None):
     return attrgraph.AttributeGraph(attrs, members)
 
+def restore(reader, token):
+    return attrgraph.AttributeGraph.from_token(token, reader)
+
 def transform(subject):
     return transformer.AnnotationTransformer().transform(subject)
 
@@ -58,11 +61,22 @@ def test_nested_attributes():
          (samples.L_D_A_IN_B_TOKENS.token, samples.L_D_A_IN_B_TOKENS.member)],
         t(g))
 
-
-def test_with_kids():
+def with_kids_scenario():
     nat = samples.L_NEST_PARTIAL_NATURAL
     ord_ = samples.L_NEST_PARTIAL_ORDERED
     tok = samples.L_NEST_PARTIAL_TOKENS
+    return nat, ord_, tok, [
+        (tok[0].token, ord_[0]), # top-level attrs
+        (tok[1]["bro"][0].token, ord_[1]["bro"][0]), # bro attrs
+        (tok[1]["bro"].token, tok[1]["bro"].member), # bro attr-only token list
+        (tok[1]["sis"][0].token, ord_[1]["sis"][0]), # sis attrs
+        (tok[1]["sis"].token, tok[1]["sis"].member), # sis attr-only token list
+        (tok[1].token, tok[1].member), # top member token dict
+        (tok.token, tok.member), # top attrs/members token list
+    ]
+
+def test_with_kids():
+    nat, ord_, tok, with_kids_tokens = with_kids_scenario()
 
     g = dag(attrs=nat[0],
             members={
@@ -70,17 +84,23 @@ def test_with_kids():
                 "sis": dag(attrs=nat[1]["sis"][0]),
                 })
 
-    r = aa(
-            [
-                (tok[0].token, ord_[0]), # top-level attrs
-                (tok[1]["bro"][0].token, ord_[1]["bro"][0]), # bro attrs
-                (tok[1]["bro"].token, tok[1]["bro"].member), # bro attr-only token list
-                (tok[1]["sis"][0].token, ord_[1]["sis"][0]), # sis attrs
-                (tok[1]["sis"].token, tok[1]["sis"].member), # sis attr-only token list
-                (tok[1].token, tok[1].member), # top member token dict
-                (tok.token, tok.member), # top attrs/members token list
-            ],
-            t(g))
+    r = aa(with_kids_tokens, t(g))
+
+def test_restore_with_kids():
+    n, o, tok, with_kids_tokens = with_kids_scenario()
+    token_store = dict(with_kids_tokens)
+    head = with_kids_tokens[-1][0]
+    g = restore(token_store.get, head)
+    tools.assert_is_instance(g, attrgraph.AttributeGraph)
+    tools.assert_equal(o[0], g.attrs)
+    tools.assert_equal(["bro", "sis"], list(g.members.keys()))
+    tools.assert_is_instance(g.members["bro"], attrgraph.AttributeGraph)
+    tools.assert_is_instance(g.members["sis"], attrgraph.AttributeGraph)
+    tools.assert_equal(n[1]["bro"][0], g.members["bro"].attrs)
+    tools.assert_equal(n[1]["sis"][0], g.members["sis"].attrs)
+    tools.assert_equal({}, g.members["bro"].members)
+    tools.assert_equal({}, g.members["sis"].members)
+
 
 def test_with_grandkids():
     n = samples.L_MULTI_NEST_PARTIAL_NATURAL

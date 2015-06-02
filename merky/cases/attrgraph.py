@@ -1,3 +1,4 @@
+import six
 from merky import util
 
 class AttributeGraph(object):
@@ -27,4 +28,26 @@ class AttributeGraph(object):
     @classmethod
     def get_default_members(cls):
         return {}
+
+    
+    @classmethod
+    def attrs_from_token_list(cls, t_list, reader):
+        return reader(t_list[0])
+
+
+    @classmethod
+    def members_from_token_list(cls, t_list, reader):
+        if t_list is None or len(t_list) < 2:
+            return None
+        items = reader(t_list[1])
+        return type(items)((k, cls.from_token(t, reader))
+                           for k, t in six.iteritems(items))
+
+
+    @classmethod
+    def from_token(cls, token, reader):
+        tokens = reader(token)
+        return cls(attrs=cls.attrs_from_token_list(tokens, reader),
+                   members=cls.members_from_token_list(tokens, reader))
+
 
