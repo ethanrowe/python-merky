@@ -160,7 +160,24 @@ Thus the user can control the manner in which a given data structure is transfor
 
 ## Attribute graph
 
-TODO: the class exists but needs docs/example here.
+Suppose you have a hierarchy of things, where each node has (in addition to its children) attributes of its own.
+
+The `merky.cases.attrgraph.AttributeGraph` class provides a data structure for this that, in combination with the
+`merky.AnnotationTransformer`:
+* Defines the tokenized form of a node as the combination of its attributes token and its members/children token.
+* Defines its attributes token as the annotated transformation of an `attrs` dictionary (the dictionary will be
+  canonicalized but its members are not).
+* Defines its members token as the annotated transformation of a `members` dictionary, the values of which are
+  each annotated as well.
+
+If a user uses the `AttributeGraph` for all nodes in the hierarchy, then `AttributeGraph` via the
+`AnnotationTransformer` can go back and forth between tokenized form and object form.
+
+The separation of node attributes from membership (graph edges) within the structure means that:
+* A child's tokenized form is unaffected by the properties of its parent or container.
+* The parent or container's tokenized form *is* affected by the properties of its members/children.
+
+See `merky.cases.attrgraph.AttributeGraph` for more.
 
 ## Simple map
 
