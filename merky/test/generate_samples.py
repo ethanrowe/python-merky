@@ -195,6 +195,10 @@ def variables():
                 }),
            ]))
 
+    yield 'readme_full_transform', D({"first": L(["a", "b", "c"]),
+                                      "second": D({"first": "1st!", "second": "2nd!"})})
+
+
 def generate(stream):
     six.print_(COMMON_CODE, file=stream)
     for name, structure in variables():

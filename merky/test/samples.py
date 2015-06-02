@@ -746,3 +746,76 @@ L_MULTI_NEST_PARTIAL_TOKENS = Tokenset(
     ]),
     token='17e00b960aef947bd75aedd50737d92f187d5c22'
 )
+README_FULL_TRANSFORM_NATURAL = {
+    'first': (
+        'a',
+        'b',
+        'c'
+    ),
+    'second': {
+        'first': '1st!',
+        'second': '2nd!',
+    },
+}
+README_FULL_TRANSFORM_ORDERED = OrderedDict([
+    (
+        'first',
+        [
+            'a',
+            'b',
+            'c'
+        ]
+    ),
+    (
+        'second',
+        OrderedDict([
+            (
+                'first',
+                '1st!'
+            ),
+            (
+                'second',
+                '2nd!'
+            )
+        ])
+    )
+])
+README_FULL_TRANSFORM_TOKENS = Tokenset(
+    OrderedDict([
+        (
+            'e13460afb1e68af030bb9bee8344c274494661fa',
+            [
+                'a',
+                'b',
+                'c'
+            ]
+        ),
+        (
+            '555cf5554cbd46144bd01851ebb278d32d4dc538',
+            OrderedDict([
+                (
+                    'first',
+                    '1st!'
+                ),
+                (
+                    'second',
+                    '2nd!'
+                )
+            ])
+        ),
+        (
+            '4c928a93cd9af338c722acfdc8daf09d186e621f',
+            OrderedDict([
+                (
+                    'first',
+                    'e13460afb1e68af030bb9bee8344c274494661fa'
+                ),
+                (
+                    'second',
+                    '555cf5554cbd46144bd01851ebb278d32d4dc538'
+                )
+            ])
+        )
+    ]),
+    token='4c928a93cd9af338c722acfdc8daf09d186e621f'
+)
