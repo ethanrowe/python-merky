@@ -3,14 +3,16 @@ import os
 
 setup(
     name = "merky",
-    version = "0.0.1a",
+    version = "0.0.2a",
     author = "Ethan Rowe",
     author_email = "ethan@the-rowes.com",
     description = ("JSON-oriented merkle tree utilities"),
     license = "MIT",
     url = "https://github.com/ethanrowe/python-merky",
     packages = ["merky",
+                "merky.cases",
                 "merky.test",
+                "merky.test.usecases",
     ],
     long_description = """
 Merky - compute merkle trees for JSON-friendly data.
