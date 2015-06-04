@@ -181,7 +181,21 @@ See `merky.cases.attrgraph.AttributeGraph` for more.
 
 ## Simple map
 
-TODO: planned but doesn't yet exist.
+The `merky.cases.tokendict.TokenDict` class provides what is probably the most obvious basic
+use of `merky` functionality, and perhaps one of the more natural data structures when thinking
+of a hash tree.  Namely: a dictionary that ensures its values will be annotated when used with
+the `merky.AnnotationTransformer`.
+
+Some example uses of this:
+* A traditional hash tree, where you want to identify which portions of two dicts are different
+  without exchanging/comparing the entire data structures.
+* A keyed collection of objects that you want to ensure receive tokenization, where the keys
+  serve merely as identifiers and do not convey any additional meaning.
+* A version history for a given structure, in which each key represents a version marker
+  (a tag, a timestamp, a simple incremented number, whatever) and the value is the state for
+  the structure as of that version.
+
+See `merky.cases.tokendict.TokenDict` for more.
 
 # Don't wear a tie.
 
