@@ -819,3 +819,223 @@ README_FULL_TRANSFORM_TOKENS = Tokenset(
     ]),
     token='4c928a93cd9af338c722acfdc8daf09d186e621f'
 )
+TOKENDICT_CASE_NATURAL = {
+    'd': {
+        'd-1': 'D1',
+        'd-0': 'D0',
+        'd-2': 'D2',
+    },
+    'a': {
+        'a-0': (
+            'a0',
+            'a1',
+            'a2'
+        ),
+        'a-1': {
+            'a2': 'A2',
+            'a1': 'A1',
+        },
+    },
+    'b': (
+        {
+            'b-0-0': 'b00',
+            'b-0-1': 'b01',
+        },
+        (
+            'b-1-0',
+            'b-1-1',
+            'b-1-2'
+        )
+    ),
+    'c': (
+        'c0',
+        'c1',
+        'c2'
+    ),
+}
+TOKENDICT_CASE_ORDERED = OrderedDict([
+    (
+        'a',
+        OrderedDict([
+            (
+                'a-0',
+                [
+                    'a0',
+                    'a1',
+                    'a2'
+                ]
+            ),
+            (
+                'a-1',
+                OrderedDict([
+                    (
+                        'a1',
+                        'A1'
+                    ),
+                    (
+                        'a2',
+                        'A2'
+                    )
+                ])
+            )
+        ])
+    ),
+    (
+        'b',
+        [
+            OrderedDict([
+                (
+                    'b-0-0',
+                    'b00'
+                ),
+                (
+                    'b-0-1',
+                    'b01'
+                )
+            ]),
+            [
+                'b-1-0',
+                'b-1-1',
+                'b-1-2'
+            ]
+        ]
+    ),
+    (
+        'c',
+        [
+            'c0',
+            'c1',
+            'c2'
+        ]
+    ),
+    (
+        'd',
+        OrderedDict([
+            (
+                'd-0',
+                'D0'
+            ),
+            (
+                'd-1',
+                'D1'
+            ),
+            (
+                'd-2',
+                'D2'
+            )
+        ])
+    )
+])
+TOKENDICT_CASE_TOKENS = Tokenset(
+    OrderedDict([
+        (
+            '8bb070270a1914d584364658568439d52b0848f9',
+            OrderedDict([
+                (
+                    'd-0',
+                    'D0'
+                ),
+                (
+                    'd-1',
+                    'D1'
+                ),
+                (
+                    'd-2',
+                    'D2'
+                )
+            ])
+        ),
+        (
+            'a3c9b59737af17fc7fccf4b0e140919e6565166d',
+            [
+                'a0',
+                'a1',
+                'a2'
+            ]
+        ),
+        (
+            '9cdeccf66ddb4753ba082af25a163cec9bfc98e5',
+            OrderedDict([
+                (
+                    'a1',
+                    'A1'
+                ),
+                (
+                    'a2',
+                    'A2'
+                )
+            ])
+        ),
+        (
+            '0572123f0f6d31414134b5d043a6f8d9dfca96a0',
+            OrderedDict([
+                (
+                    'a-0',
+                    'a3c9b59737af17fc7fccf4b0e140919e6565166d'
+                ),
+                (
+                    'a-1',
+                    '9cdeccf66ddb4753ba082af25a163cec9bfc98e5'
+                )
+            ])
+        ),
+        (
+            '6c5a4148c9ce52e13cf494928abdeac1dd0b18fb',
+            OrderedDict([
+                (
+                    'b-0-0',
+                    'b00'
+                ),
+                (
+                    'b-0-1',
+                    'b01'
+                )
+            ])
+        ),
+        (
+            'd2776335a7b9559196b2b7cb955e19355240cd80',
+            [
+                'b-1-0',
+                'b-1-1',
+                'b-1-2'
+            ]
+        ),
+        (
+            '142ad42195113b86cd047f9331eaf4ebfde94a7f',
+            [
+                '6c5a4148c9ce52e13cf494928abdeac1dd0b18fb',
+                'd2776335a7b9559196b2b7cb955e19355240cd80'
+            ]
+        ),
+        (
+            '18326bc60f1f881a599c61d052f7330d0a424e63',
+            [
+                'c0',
+                'c1',
+                'c2'
+            ]
+        ),
+        (
+            '476d4497a13fb005be14d684c45b3908cb0b7ba5',
+            OrderedDict([
+                (
+                    'a',
+                    '0572123f0f6d31414134b5d043a6f8d9dfca96a0'
+                ),
+                (
+                    'b',
+                    '142ad42195113b86cd047f9331eaf4ebfde94a7f'
+                ),
+                (
+                    'c',
+                    '18326bc60f1f881a599c61d052f7330d0a424e63'
+                ),
+                (
+                    'd',
+                    '8bb070270a1914d584364658568439d52b0848f9'
+                )
+            ])
+        )
+    ]),
+    token='476d4497a13fb005be14d684c45b3908cb0b7ba5'
+)
