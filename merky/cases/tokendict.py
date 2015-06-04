@@ -1,17 +1,28 @@
 import six
 from merky import util
 
+NO_DEFAULT=object()
+
 class TokenDict(object):
     __merky__ = True
 
     def __init__(self, dict_):
         self.dict_ = dict_
 
-    def get(self, item):
-        pass
+    def get(self, item, default=NO_DEFAULT):
+        try:
+            return util.annotate(self.dict_[item])
+        except KeyError:
+            if default is NO_DEFAULT:
+                raise
+            return default
 
-    def set(self, item, value):
-        pass
+
+    def __getitem__(self, key):
+        return self.get(key)
+
+    def __setitem__(self, key, val):
+        self.dict_[key] = val
 
     def _pairs(self):
         return sorted(six.iteritems(self.dict_))

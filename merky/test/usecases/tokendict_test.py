@@ -14,6 +14,18 @@ def test_dict_():
     tools.assert_equal(d, g.dict_)
 
 
+def test_get_and_set():
+    d = {"foo": ["bar"]}
+    conv = lambda v: list(v) if getattr(v, '__merky__', False) else None
+    g = tokendict.TokenDict(d)
+    tools.assert_equal(["bar"], conv(g.get("foo")))
+    tools.assert_raises(KeyError, g.get, "blah")
+    tools.assert_equal("default", g.get("blah", "default"))
+    tools.assert_equal(["bar"], conv(g["foo"]))
+    g["blah"] = ["somethin"]
+    tools.assert_equal(["somethin"], conv(g.get("blah")))
+
+
 def test_key_sort():
     d = {"z": "Z", "m": "M", "g": "G", "q": "Q", "c": "C", "w": "W", "a": "A"}
     g = tokendict.TokenDict(d)
