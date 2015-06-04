@@ -199,15 +199,15 @@ def variables():
                                       "second": D({"first": "1st!", "second": "2nd!"})})
 
     yield 'tokendict_case', D({"a": D({
-                                        "a-0": L(["a0", "a1", "a2"], recurse=False),
-                                        "a-1": D({"a1": "A1", "a2": "A2"}, recurse=False),
-                                    }),
+                                        "a-0": L(["a0", "a1", "a2"]),
+                                        "a-1": D({"a1": "A1", "a2": "A2"}),
+                                    }, recurse=False),
                                 "b": L([
-                                        D({"b-0-0": "b00", "b-0-1": "b01"}, recurse=False),
-                                        L(["b-1-0", "b-1-1", "b-1-2"], recurse=False),
-                                    ]),
-                                "c": L(["c0", "c1", "c2"]),
-                                "d": D({"d-0": "D0", "d-1": "D1", "d-2": "D2"}),
+                                        D({"b-0-0": "b00", "b-0-1": "b01"}),
+                                        L(["b-1-0", "b-1-1", "b-1-2"]),
+                                    ], recurse=False),
+                                "c": L(["c0", "c1", "c2"], recurse=False),
+                                "d": D({"d-0": "D0", "d-1": "D1", "d-2": "D2"}, recurse=False),
                             })
 
 def generate(stream):
