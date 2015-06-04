@@ -45,10 +45,24 @@ def test_tokenization():
     tools.assert_raises(StopIteration, next, i)
 
 
+CACHE = dict((t.token, t.member)
+             for t in (TOK["a"], TOK["b"], TOK["c"], TOK["d"], TOK))
+
 def test_restoration():
-    cache = dict((t.token, t.member)
-                 for t in (TOK["a"], TOK["b"], TOK["c"], TOK["d"], TOK))
-    g = tokendict.TokenDict.from_token(TOK.token, cache.get)
+    g = tokendict.TokenDict.from_token(TOK.token, CACHE.get)
     tools.assert_equal(["a", "b", "c", "d"], list(g.keys()))
     tools.assert_equal(ORD, g.dict_)
+
+
+def test_restoration_with_builder():
+    def wrapper(value):
+        def wrapped():
+            return ('called me!', value)
+        return wrapped
+
+    g = tokendict.TokenDict.from_token(TOK.token, CACHE.get, wrapper)
+    tools.assert_equal(["a", "b", "c", "d"], list(g.keys()))
+    tools.assert_equal(dict((k, ('called me!', v)) for k, v in ORD.items()),
+                       dict((k, v()) for k, v in g.dict_.items()))
+
 

@@ -30,8 +30,8 @@ class TokenDict(object):
         return self.items()
 
     @classmethod
-    def from_token(cls, token, reader):
+    def from_token(cls, token, reader, builder=None):
         dict_ = reader(token)
-        return cls(dict((k, reader(v)) for k, v in six.iteritems(dict_)))
-
+        handler = reader if builder is None else lambda val: builder(reader(val))
+        return cls(dict((k, handler(v)) for k, v in six.iteritems(dict_)))
 
