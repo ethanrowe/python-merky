@@ -1,6 +1,5 @@
-import json
-
 from . import digest
+from . import serialization
 from . import tree
 
 class Transformer(object):
@@ -75,10 +74,8 @@ class Transformer(object):
         Subclasses could override this to use an alternate serialization approach; the result must
         support `encode()`.
         """
-        return json.JSONEncoder(ensure_ascii=False,
-                                allow_nan=False,
-                                sort_keys=True,
-                                separators=(",",":")).encode
+        return serialization.json_serializer()
+
 
     def get_dispatcher(self):
         """
