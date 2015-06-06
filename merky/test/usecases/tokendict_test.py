@@ -67,9 +67,9 @@ def test_restoration():
 
 
 def test_restoration_with_builder():
-    def wrapper(value):
+    def wrapper(token, reader):
         def wrapped():
-            return ('called me!', value)
+            return ('called me!', reader(token))
         return wrapped
 
     g = tokendict.TokenDict.from_token(TOK.token, CACHE.get, wrapper)
