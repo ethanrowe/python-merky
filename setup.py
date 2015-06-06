@@ -11,7 +11,10 @@ setup(
     url = "https://github.com/ethanrowe/python-merky",
     packages = ["merky",
                 "merky.cases",
+                "merky.store",
                 "merky.test",
+                "merky.test.misc",
+                "merky.test.store",
                 "merky.test.usecases",
     ],
     long_description = """
