@@ -197,6 +197,44 @@ Some example uses of this:
 
 See `merky.cases.tokendict.TokenDict` for more.
 
+# Storage options
+
+Complex storage options are outside the scope of `merky`.  However, for convenience, `merky
+does provide some minimal storage options that can serve for some cases.
+
+An arbitrary transformed structure can be stored/restored using various classes found in the
+`merky.store.structure` module.  For instance:
+
+```python
+# Suppose this gives me some `merky.cases.attrgraph.AttributeGraph` instance.
+g = get_my_graph()
+
+# Now I'm going to store it a file.
+transformed = merky.AnnotationTransformer().transform(g)
+
+# Get a JSON file writer for the path 'my-graph.json'
+store = merky.store.structure.JSONFileWriteStructure('my-graph.json')
+
+# Populate the writer with the transformed data.
+store.populate(transformed)
+
+# Write the file.
+store.close()
+```
+
+Now later you want to restore it.  Like so:
+
+```python
+# Get the reader.
+store = merky.store.structure.JSONFileReadStructure('my-graph.json')
+
+# And away we go.
+g = merky.cases.attrgraph.AttributeGraph.from_token(store.head, store.get)
+```
+
+For a more complex example, see `merky.test.misc.graph_storage_test`, which
+assembles a `TokenDict` of `AttributeGraphs`, writes to JSON, then restores from JSON.
+
 # Don't wear a tie.
 
 It's an anachronistic absurdity that needs to be abolished.  Direct your respect elsewhere.

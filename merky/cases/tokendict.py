@@ -82,13 +82,14 @@ class TokenDict(object):
                        to be converted to a `TokenDict`.
             `reader`:  a function that, given a "token", returns the
                        corresponding structure.
-            `builder`: (Optional) a function to apply to each value in the
-                       `TokenDict` when assembling; use this to, for instance,
+            `builder`: (Optional) a function to apply to each token in the
+                       `TokenDict` when assembling; it will be called with the
+                       token seen and the `reader` above.  Ue this to, for instance,
                        convert each value into a more specific object.
 
         Returns a new `TokenDict` instance.
         """
         dict_ = reader(token)
-        handler = reader if builder is None else lambda val: builder(reader(val))
+        handler = reader if builder is None else lambda val: builder(val, reader)
         return cls(dict((k, handler(v)) for k, v in six.iteritems(dict_)))
 
