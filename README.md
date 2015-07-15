@@ -197,6 +197,11 @@ Some example uses of this:
 
 See `merky.cases.tokendict.TokenDict` for more.
 
+## Walker
+
+You can explore a transformed structure to walk the tokens and associated structures
+as a graph using the `merky.cases.walker.Walker` class.  Refer to its docs for more.
+
 # Storage options
 
 Complex storage options are outside the scope of `merky`.  However, for convenience, `merky
