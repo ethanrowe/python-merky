@@ -210,6 +210,45 @@ def variables():
                                 "d": D({"d-0": "D0", "d-1": "D1", "d-2": "D2"}, recurse=False),
                             })
 
+    yield ('walker_list_case',
+            L([
+                "string",
+                57,
+                L(["string", 30, D({"a": "b"}), L(["a", "b", "c"])]),
+                D({"string": "stringy",
+                    "number": 20,
+                    "dict": D({"a": "b"}),
+                    "list": L(["another", "list"])})
+            ]))
+
+    yield ('walker_dict_case',
+            D({
+                "string": "stringy",
+                "number": 30000,
+                "dict": D({
+                        "string": "stringy",
+                        "number": -52,
+                        "dict": D({"a": "b"}),
+                        "list": L(["another", "list"]),
+                    }),
+                "list": L([
+                        "string",
+                        23423,
+                        D({
+                            "string": "stringy",
+                            "number": -12,
+                            "dict": D({"a": "b"}),
+                            "list": L(["another", "list"]),
+                            }),
+                        L([
+                            "string",
+                            1234,
+                            D({"a": "b"}),
+                            L(["another", "list"]),
+                            ]),
+                    ]),
+            }))
+
 def generate(stream):
     six.print_(COMMON_CODE, file=stream)
     for name, structure in variables():
