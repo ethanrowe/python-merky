@@ -1023,3 +1023,372 @@ TOKENDICT_CASE_TOKENS = Tokenset(
     ]),
     token='16ca573066c45c48b507005151a9c2d4147aa6e9'
 )
+WALKER_LIST_CASE_NATURAL = (
+    'string',
+    57,
+    (
+        'string',
+        30,
+        {
+            'a': 'b',
+        },
+        (
+            'a',
+            'b',
+            'c'
+        )
+    ),
+    {
+        'list': (
+            'another',
+            'list'
+        ),
+        'string': 'stringy',
+        'number': 20,
+        'dict': {
+            'a': 'b',
+        },
+    }
+)
+WALKER_LIST_CASE_ORDERED = [
+    'string',
+    57,
+    [
+        'string',
+        30,
+        OrderedDict([
+            (
+                'a',
+                'b'
+            )
+        ]),
+        [
+            'a',
+            'b',
+            'c'
+        ]
+    ],
+    OrderedDict([
+        (
+            'dict',
+            OrderedDict([
+                (
+                    'a',
+                    'b'
+                )
+            ])
+        ),
+        (
+            'list',
+            [
+                'another',
+                'list'
+            ]
+        ),
+        (
+            'number',
+            20
+        ),
+        (
+            'string',
+            'stringy'
+        )
+    ])
+]
+WALKER_LIST_CASE_TOKENS = Tokenset(
+    OrderedDict([
+        (
+            'f19667405306ef12c6e6541a9326e358235b8a14',
+            OrderedDict([
+                (
+                    'a',
+                    'b'
+                )
+            ])
+        ),
+        (
+            'e13460afb1e68af030bb9bee8344c274494661fa',
+            [
+                'a',
+                'b',
+                'c'
+            ]
+        ),
+        (
+            'e3c12c8641aa6d642e0cedb22fad9ed92857f0be',
+            [
+                'string',
+                30,
+                'f19667405306ef12c6e6541a9326e358235b8a14',
+                'e13460afb1e68af030bb9bee8344c274494661fa'
+            ]
+        ),
+        (
+            '8bbb41d562acdca8c980d9369a309614aaf878a0',
+            [
+                'another',
+                'list'
+            ]
+        ),
+        (
+            '6d00e4efc2d3b77d52dfa21e4bf78f1d1e7fcfa5',
+            OrderedDict([
+                (
+                    'dict',
+                    'f19667405306ef12c6e6541a9326e358235b8a14'
+                ),
+                (
+                    'list',
+                    '8bbb41d562acdca8c980d9369a309614aaf878a0'
+                ),
+                (
+                    'number',
+                    20
+                ),
+                (
+                    'string',
+                    'stringy'
+                )
+            ])
+        ),
+        (
+            '969ae32e26998018dd35294664a11dc3016d9b0a',
+            [
+                'string',
+                57,
+                'e3c12c8641aa6d642e0cedb22fad9ed92857f0be',
+                '6d00e4efc2d3b77d52dfa21e4bf78f1d1e7fcfa5'
+            ]
+        )
+    ]),
+    token='969ae32e26998018dd35294664a11dc3016d9b0a'
+)
+WALKER_DICT_CASE_NATURAL = {
+    'list': (
+        'string',
+        23423,
+        {
+            'list': (
+                'another',
+                'list'
+            ),
+            'string': 'stringy',
+            'number': -12,
+            'dict': {
+                'a': 'b',
+            },
+        },
+        (
+            'string',
+            1234,
+            {
+                'a': 'b',
+            },
+            (
+                'another',
+                'list'
+            )
+        )
+    ),
+    'string': 'stringy',
+    'number': 30000,
+    'dict': {
+        'list': (
+            'another',
+            'list'
+        ),
+        'string': 'stringy',
+        'number': -52,
+        'dict': {
+            'a': 'b',
+        },
+    },
+}
+WALKER_DICT_CASE_ORDERED = OrderedDict([
+    (
+        'dict',
+        OrderedDict([
+            (
+                'dict',
+                OrderedDict([
+                    (
+                        'a',
+                        'b'
+                    )
+                ])
+            ),
+            (
+                'list',
+                [
+                    'another',
+                    'list'
+                ]
+            ),
+            (
+                'number',
+                -52
+            ),
+            (
+                'string',
+                'stringy'
+            )
+        ])
+    ),
+    (
+        'list',
+        [
+            'string',
+            23423,
+            OrderedDict([
+                (
+                    'dict',
+                    OrderedDict([
+                        (
+                            'a',
+                            'b'
+                        )
+                    ])
+                ),
+                (
+                    'list',
+                    [
+                        'another',
+                        'list'
+                    ]
+                ),
+                (
+                    'number',
+                    -12
+                ),
+                (
+                    'string',
+                    'stringy'
+                )
+            ]),
+            [
+                'string',
+                1234,
+                OrderedDict([
+                    (
+                        'a',
+                        'b'
+                    )
+                ]),
+                [
+                    'another',
+                    'list'
+                ]
+            ]
+        ]
+    ),
+    (
+        'number',
+        30000
+    ),
+    (
+        'string',
+        'stringy'
+    )
+])
+WALKER_DICT_CASE_TOKENS = Tokenset(
+    OrderedDict([
+        (
+            '8bbb41d562acdca8c980d9369a309614aaf878a0',
+            [
+                'another',
+                'list'
+            ]
+        ),
+        (
+            'f19667405306ef12c6e6541a9326e358235b8a14',
+            OrderedDict([
+                (
+                    'a',
+                    'b'
+                )
+            ])
+        ),
+        (
+            '7941a6a7d303d807ede529ee15741299b9f1dea8',
+            OrderedDict([
+                (
+                    'dict',
+                    'f19667405306ef12c6e6541a9326e358235b8a14'
+                ),
+                (
+                    'list',
+                    '8bbb41d562acdca8c980d9369a309614aaf878a0'
+                ),
+                (
+                    'number',
+                    -12
+                ),
+                (
+                    'string',
+                    'stringy'
+                )
+            ])
+        ),
+        (
+            '26fbd2a53260b2d88a919bebc042ce64d288b776',
+            [
+                'string',
+                1234,
+                'f19667405306ef12c6e6541a9326e358235b8a14',
+                '8bbb41d562acdca8c980d9369a309614aaf878a0'
+            ]
+        ),
+        (
+            'a06d8dcbb2ca99b0c8be346ab7f029612fd24350',
+            [
+                'string',
+                23423,
+                '7941a6a7d303d807ede529ee15741299b9f1dea8',
+                '26fbd2a53260b2d88a919bebc042ce64d288b776'
+            ]
+        ),
+        (
+            'e1a08488f7b8a47a079e37cc3f3144bed3a7eed5',
+            OrderedDict([
+                (
+                    'dict',
+                    'f19667405306ef12c6e6541a9326e358235b8a14'
+                ),
+                (
+                    'list',
+                    '8bbb41d562acdca8c980d9369a309614aaf878a0'
+                ),
+                (
+                    'number',
+                    -52
+                ),
+                (
+                    'string',
+                    'stringy'
+                )
+            ])
+        ),
+        (
+            '5a8b42c2493e5d2e1d019f96f0375fb9766d2932',
+            OrderedDict([
+                (
+                    'dict',
+                    'e1a08488f7b8a47a079e37cc3f3144bed3a7eed5'
+                ),
+                (
+                    'list',
+                    'a06d8dcbb2ca99b0c8be346ab7f029612fd24350'
+                ),
+                (
+                    'number',
+                    30000
+                ),
+                (
+                    'string',
+                    'stringy'
+                )
+            ])
+        )
+    ]),
+    token='5a8b42c2493e5d2e1d019f96f0375fb9766d2932'
+)
