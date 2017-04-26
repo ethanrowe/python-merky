@@ -95,7 +95,7 @@ use case.
 
 The annotation interface of `merky` gives the user control over the tokenization of
 a complex data structure.  In effect, the user annotates the data structure to instruct
-`merky` on which portions should be tokenized.
+`merky` on which portions should be tokenized or excluded from tokenization.
 
 Using the `merky.AnnotationTransformer`:
 * All structures convert to their canonical forms.
@@ -103,9 +103,16 @@ Using the `merky.AnnotationTransformer`:
 * Nested structures are only tokenized if they have a `__merky__` attribute with a
   truthy value.
 
+Using the `merky.ExcludeAnnotationTransformer`:
+* The top-level structure passed to `transform()` is always tokenized.
+* All structures convert to their canonical forms.
+* Nested structures are always tokenized except if they have a `__merky__` 
+  attribute with a truthy value.
+
 The `merky.annotate` helper can wrap any arbitrary structure such that the
 `__merky__` truth requirement is met, causing the `AnnotationTransformer` to tokenize
-that wrapped structure.
+that wrapped structure or the `ExcludeAnnotationTransformer` to exclude the structure
+from tokenization.
 
 ### Example annotated transformations
 

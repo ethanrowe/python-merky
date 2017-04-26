@@ -112,3 +112,18 @@ class AnnotationTransformer(Transformer):
     def get_dispatcher(self):
         return tree.annotation_dispatcher
 
+
+class ExcludeAnnotationTransformer(Transformer):
+    """
+    A merky Transformer that normalizes the input structure, but excludes
+    structures that have been "annotated" with the ``__merky__`` attribute with a
+    true value.
+
+    The top-level structure is always tokenized and yielded regardless of the presence of the
+    annotation.
+
+    See the `merky.util.annotate` helper for annotating your data structures for use with
+    this transformer.
+    """
+    def get_dispatcher(self):
+        return tree.exclude_annotation_dispatcher

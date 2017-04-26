@@ -77,6 +77,11 @@ def walker(structure, dispatcher, tokenizer):
             accum.append(value)
 
 
+def notter(handler):
+    def handle(item):
+        next_item, next_col, next_tok = handler(item)
+        return next_item, next_col, not next_tok
+    return handle
 
 
 map_annotation_handler = annotation_handler(map_handler, 'map_annotation_handler')
@@ -92,4 +97,8 @@ annotation_dispatcher = dispatcher(string_handler,
                                    seq_annotation_handler,
                                    default_handler)
 
+exclude_annotation_dispatcher = dispatcher(string_handler,
+                                           notter(map_annotation_handler),
+                                           notter(seq_annotation_handler),
+                                           default_handler)
 
