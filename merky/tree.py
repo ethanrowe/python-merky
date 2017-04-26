@@ -35,6 +35,7 @@ def annotation_handler(handler, name=None, doc=None):
     return wrapped
 
 
+
 def dispatcher(*handlers):
     def inner(item):
         for handler in handlers:
@@ -77,13 +78,6 @@ def walker(structure, dispatcher, tokenizer):
             accum.append(value)
 
 
-def notter(handler):
-    def handle(item):
-        next_item, next_col, next_tok = handler(item)
-        return next_item, next_col, not next_tok
-    return handle
-
-
 map_annotation_handler = annotation_handler(map_handler, 'map_annotation_handler')
 seq_annotation_handler = annotation_handler(seq_handler, 'seq_annotation_handler')
 
@@ -97,8 +91,32 @@ annotation_dispatcher = dispatcher(string_handler,
                                    seq_annotation_handler,
                                    default_handler)
 
-exclude_annotation_dispatcher = dispatcher(string_handler,
-                                           notter(map_annotation_handler),
-                                           notter(seq_annotation_handler),
-                                           default_handler)
+def excluder_handler(handler, converter, collector, name):
+    def handle(item):
+        next_item, next_col, next_tok = handler(item)
+        if next_tok:
+            next_item = converter(next_item)
+            next_col = collector
+        return next_item, next_col, not next_tok
+    handle.__name__ = name
+    return handle
+
+def _unmerk(items):
+    for i in items:
+        yield getattr(i, '__merky_annotated__', i)
+
+exclude_annotation_dispatcher = dispatcher(
+        string_handler,
+        excluder_handler(
+            map_annotation_handler,
+            lambda m: util.flatten((k, util.annotate(v))
+                for k, v in util.pairwise(m)),
+            lambda i: util.ordered_map(_unmerk(i)),
+            'map_exclude_handler'),
+        excluder_handler(
+            seq_annotation_handler,
+            lambda s: (util.annotate(v) for v in s),
+            lambda i: list(_unmerk(i)),
+            'seq_exclude_handler'),
+        default_handler)
 

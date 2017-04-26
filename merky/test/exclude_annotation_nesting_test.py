@@ -113,17 +113,12 @@ def test_mixed_nesting():
               ],
         }
     r = t.transform(x)
-    # Lowest level: x["a"][0]
-    tools.assert_equal(('9999c10f0f35c46a472e16ecec8d7cac6b0ac127',
-                        collections.OrderedDict([('a', collections.OrderedDict([('a', 'A'), ('b', 'B')])), ('b', 'B')])),
-                       next(r))
+    # x["a"] is annotated and thus won't show up until the final structure.
+    # The first guy will be x["b"][1], which does get tokenized.
+    # Second guy will be x["b"], which also gets tokenized.
+    # Final guy is the full container x.
 
-    # Next up: x["a"][1]
-    tools.assert_equal(('0018774ddc2b3b541fbc4420dd74938993399798',
-                        collections.OrderedDict([('nothing', 'special')])),
-                        next(r))
-
-    # Next up: x["b"][1]
+    # First up: x["b"][1]
     tools.assert_equal(('37c3a03f839031d9a6eb3281b792a0cb6e02e79d',
                         collections.OrderedDict((
                             ('e', 'E'),
@@ -142,12 +137,16 @@ def test_mixed_nesting():
                        next(r))
 
     # Final, top level
-    tools.assert_equal(('519776beb2cec6f8810e3b8ff25a248a2415985a',
-                        collections.OrderedDict((
-                            ('a', ['9999c10f0f35c46a472e16ecec8d7cac6b0ac127',
-                                   '0018774ddc2b3b541fbc4420dd74938993399798']),
-                            ('b', 'a6af006f34fec3ea34cf23b6505fd8eed6ccb3d6'))
-                        )),
-                       next(r))
+    tools.assert_equal(('a723583cedba5006719024f7600301ea76287a36',
+        collections.OrderedDict((
+            ('a', [
+                collections.OrderedDict((
+                    ('a', collections.OrderedDict((('a', 'A'), ('b', 'B')))),
+                    ('b', 'B'))),
+                collections.OrderedDict((('nothing', 'special'),)),
+                ]),
+            ('b', 'a6af006f34fec3ea34cf23b6505fd8eed6ccb3d6')))),
+        next(r))
 
     tools.assert_raises(StopIteration, next, r)
+
