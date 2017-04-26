@@ -27,18 +27,20 @@ class annotate(object):
     to the wrapped object, but provides a `__merky__` attribute of
     value `True`, indicating to transformers that the object should
     be "tokenized".
+
+    The object wrapped is accessible via `__merky_annotated__`.
     """
-    __slots__ = ('_o',)
+    __slots__ = ('__merky_annotated__',)
     __merky__ = True
 
     def __init__(self, wrapped):
-        self._o = wrapped
+        self.__merky_annotated__ = wrapped
 
     def __getattr__(self, attr):
-        return getattr(self._o, attr)
+        return getattr(self.__merky_annotated__, attr)
 
     def __iter__(self):
-        return iter(self._o)
+        return iter(self.__merky_annotated__)
 
 
 def annotate_values(dictlike):
