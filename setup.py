@@ -3,7 +3,7 @@ import os
 
 setup(
     name = "merky",
-    version = "0.0.4",
+    version = "0.1.0",
     author = "Ethan Rowe",
     author_email = "ethan@the-rowes.com",
     description = ("JSON-oriented merkle tree utilities"),
