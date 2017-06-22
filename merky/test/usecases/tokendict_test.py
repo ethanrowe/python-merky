@@ -14,6 +14,16 @@ def test_dict_():
     tools.assert_equal(d, g.dict_)
 
 
+def test_length():
+    d = {"foo": 1, "bar": 2}
+    g = tokendict.TokenDict(d)
+    tools.assert_equal(len(d), len(g))
+
+    d = {}
+    g = tokendict.TokenDict(d)
+    tools.assert_equal(len(d), len(g))
+
+
 def test_get_and_set():
     d = {"foo": ["bar"]}
     conv = lambda v: list(v) if getattr(v, '__merky__', False) else None

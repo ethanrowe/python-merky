@@ -2,6 +2,7 @@ import itertools
 import six
 from merky import util
 
+
 class AttributeGraph(object):
     """
     Represent a hierarchy of nodes with attributes.
@@ -107,7 +108,7 @@ class AttributeGraph(object):
     def get_default_members(cls):
         return {}
 
-    
+
     @classmethod
     def attrs_from_token_list(cls, t_list, reader):
         return reader(t_list[0])
@@ -143,7 +144,6 @@ class AttributeGraph(object):
         tokens = reader(token)
         return cls(attrs=cls.attrs_from_token_list(tokens, reader),
                    members=cls.members_from_token_list(tokens, reader))
-
 
     def walk(self, prior, key, predicate=lambda o, p, k: True):
         chain = list(itertools.chain(((key, self),), prior))
@@ -210,5 +210,3 @@ class AttributeGraph(object):
 
         """
         return self.walk((), None, predicate=lambda o, p, k: (o.members is None or len(o.members) < 1))
-
-
