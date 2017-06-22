@@ -1,7 +1,8 @@
 import six
 from merky import util
 
-NO_DEFAULT=object()
+NO_DEFAULT = object()
+
 
 class TokenDict(object):
     """
@@ -22,6 +23,9 @@ class TokenDict(object):
     def __init__(self, dict_):
         self.dict_ = dict_
 
+    def __len__(self):
+        return len(self.dict_)
+
     def get(self, item, default=NO_DEFAULT):
         """
         Returns the annotated value associated with `key`.
@@ -36,7 +40,6 @@ class TokenDict(object):
             if default is NO_DEFAULT:
                 raise
             return default
-
 
     def __getitem__(self, key):
         return self.get(key)
@@ -92,4 +95,3 @@ class TokenDict(object):
         dict_ = reader(token)
         handler = reader if builder is None else lambda val: builder(val, reader)
         return cls(dict((k, handler(v)) for k, v in six.iteritems(dict_)))
-
